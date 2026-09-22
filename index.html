@@ -158,7 +158,7 @@
                 </button>
             </div>
 
-            <!-- Fullscreen Button (Auto hides when in fullscreen mode) -->
+            <!-- Fullscreen Button -->
             <button id="btn-fullscreen" onclick="toggleFullScreen()" class="p-1.5 md:px-2.5 md:py-1.5 glass-button text-slate-200 rounded-lg transition flex items-center gap-1 text-xs font-semibold">
                 <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
                 <span class="hidden md:inline">Layar Penuh</span>
@@ -395,7 +395,7 @@
                 </button>
             </div>
 
-            <!-- Settings Tabs Navigation (TERMASUK PENGATURAN UMUM) -->
+            <!-- Settings Tabs Navigation -->
             <div class="flex border-b border-slate-800/80 bg-slate-900/40 px-4 pt-2 gap-1 overflow-x-auto">
                 <button onclick="switchTab('tab-general')" id="btn-tab-general" class="tab-btn active border-b-2 border-indigo-400 text-indigo-300 font-bold px-3 py-2 text-xs flex items-center gap-1 whitespace-nowrap">
                     <i data-lucide="settings" class="w-3.5 h-3.5"></i> Pengaturan Umum
@@ -414,7 +414,7 @@
             <!-- Tab Contents -->
             <div class="p-4 overflow-y-auto flex-1">
                 
-                <!-- TAB 0: PENGATURAN UMUM (DIKEMBALIKAN) -->
+                <!-- TAB 0: PENGATURAN UMUM -->
                 <div id="tab-general" class="tab-content space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -429,10 +429,15 @@
                             <label class="block text-[11px] font-semibold text-slate-300 mb-1">Default Waktu Timer Soal (Detik)</label>
                             <input type="number" id="setting-default-timer" value="10" min="3" max="60" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-400">
                         </div>
-                        <div class="flex items-center pt-5">
+                        <div class="flex flex-col justify-center space-y-2 pt-2">
                             <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
                                 <input type="checkbox" id="setting-sound-enabled" checked class="rounded bg-slate-950 border-slate-700 text-indigo-500 w-4 h-4">
                                 <span>Aktifkan Efek Suara (Sound Effects)</span>
+                            </label>
+                            <!-- REVISI WAKTU: OPSI PAKSA WAKTU PENGATURAN UMUM -->
+                            <label class="flex items-center gap-2 text-xs text-amber-300 cursor-pointer font-semibold">
+                                <input type="checkbox" id="setting-force-general-timer" class="rounded bg-slate-950 border-slate-700 text-amber-500 w-4 h-4">
+                                <span>Paksa Gunakan Waktu Pengaturan Umum untuk Semua Soal</span>
                             </label>
                         </div>
                     </div>
@@ -445,11 +450,47 @@
 
                 <!-- TAB 1: KELOLA SOAL -->
                 <div id="tab-questions" class="tab-content hidden space-y-4">
+                    
+                    <!-- REVISI SOAL: PRESET SOAL SUBJEK (BISA DIPILIH / DITEKAN LEBIH DARI SATU) -->
+                    <div class="bg-slate-900/60 border border-slate-700/60 rounded-xl p-3 backdrop-blur space-y-2">
+                        <div class="flex justify-between items-center">
+                            <h5 class="text-xs font-bold text-indigo-300 flex items-center gap-1">
+                                <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Masukkan Paket Soal Preset (10 Soal tiap subjek):
+                            </h5>
+                            <span class="text-[10px] text-slate-400">Tekan tombol untuk memasukkan soal</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="addPresetSubjectQuestions('IPA')" class="bg-indigo-600/60 hover:bg-indigo-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-indigo-400/30 transition">
+                                + IPA (10 Soal)
+                            </button>
+                            <button onclick="addPresetSubjectQuestions('B_INDO')" class="bg-emerald-600/60 hover:bg-emerald-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-emerald-400/30 transition">
+                                + B. Indonesia (10 Soal)
+                            </button>
+                            <button onclick="addPresetSubjectQuestions('B_ING')" class="bg-purple-600/60 hover:bg-purple-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-purple-400/30 transition">
+                                + B. Inggris (10 Soal)
+                            </button>
+                            <button onclick="addPresetSubjectQuestions('TIK')" class="bg-cyan-600/60 hover:bg-cyan-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-cyan-400/30 transition">
+                                + TIK (10 Soal)
+                            </button>
+                            <button onclick="addPresetSubjectQuestions('PJOK')" class="bg-amber-600/60 hover:bg-amber-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-amber-400/30 transition">
+                                + PJOK (10 Soal)
+                            </button>
+                            <button onclick="addPresetSubjectQuestions('UMUM')" class="bg-rose-600/60 hover:bg-rose-500/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg border border-rose-400/30 transition">
+                                + Pengetahuan Umum (10 Soal)
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="flex justify-between items-center">
                         <h4 class="font-bold text-slate-200 text-xs">Daftar Pertanyaan</h4>
-                        <button onclick="openQuestionForm()" class="bg-indigo-600/80 hover:bg-indigo-500/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 border border-indigo-400/30">
-                            <i data-lucide="plus" class="w-3 h-3"></i> Tambah Soal
-                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="clearAllQuestions()" class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 text-[10px] font-bold px-2.5 py-1 rounded-lg transition border border-rose-800/50">
+                                Kosongkan Soal
+                            </button>
+                            <button onclick="openQuestionForm()" class="bg-indigo-600/80 hover:bg-indigo-500/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1 border border-indigo-400/30">
+                                <i data-lucide="plus" class="w-3 h-3"></i> Tambah Soal Manual
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Question Form -->
@@ -494,9 +535,9 @@
                     <!-- Questions List Table -->
                     <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl overflow-hidden backdrop-blur">
                         <div id="questions-list-empty" class="p-6 text-center text-slate-400 text-xs">
-                            Belum ada soal.
+                            Belum ada soal. Pilih paket preset di atas atau tambah manual!
                         </div>
-                        <div id="questions-list-container" class="divide-y divide-slate-800/60">
+                        <div id="questions-list-container" class="divide-y divide-slate-800/60 max-h-60 overflow-y-auto">
                             <!-- Populated dynamically -->
                         </div>
                     </div>
@@ -553,12 +594,12 @@
         // General Settings State
         let soundEnabled = true;
         let defaultQuestionTimer = 10;
+        let forceGeneralTimer = false; // State untuk paksa waktu umum
 
-        // Sample Data
+        // Sample Data Initial
         let questions = [
-            { id: 1, text: "Manakah planet terbesar di Tata Surya kita?", optA: "Mars", optB: "Jupiter", correct: "B", timer: 10, category: "Sains" },
-            { id: 2, text: "Proses tumbuhan membuat makanan sendiri dinamakan?", optA: "Fotosintesis", optB: "Respirasi", correct: "A", timer: 10, category: "Biologi" },
-            { id: 3, text: "Hasil dari 12 x 8 adalah?", optA: "86", optB: "96", correct: "B", timer: 10, category: "Matematika" }
+            { id: 1, text: "Manakah planet terbesar di Tata Surya kita?", optA: "Mars", optB: "Jupiter", correct: "B", timer: 10, category: "IPA" },
+            { id: 2, text: "Proses tumbuhan membuat makanan sendiri dinamakan?", optA: "Fotosintesis", optB: "Respirasi", correct: "A", timer: 10, category: "IPA" }
         ];
 
         let students = [
@@ -568,6 +609,82 @@
             { id: 4, name: "Doni", active: true },
             { id: 5, name: "Eka", active: true }
         ];
+
+        // PRESET SOAL UNTUK DITAMBAHKAN VIA TOMBOL
+        const subjectPresets = {
+            IPA: [
+                { text: "Benda yang dapat menarik benda bermuatan logam dinamakan?", optA: "Magnet", optB: "Kaca", correct: "A", timer: 10, category: "IPA" },
+                { text: "Organ tubuh manusia yang berfungsi memompa darah adalah?", optA: "Paru-paru", optB: "Jantung", correct: "B", timer: 10, category: "IPA" },
+                { text: "Perubahan wujud zat padat menjadi gas dinamakan?", optA: "Mencair", optB: "Menyublim", correct: "B", timer: 10, category: "IPA" },
+                { text: "Zat cair yang mengisi sebagian besar tubuh manusia adalah?", optA: "Air", optB: "Minyak", correct: "A", timer: 10, category: "IPA" },
+                { text: "Hewan yang dapat hidup di darat dan di air disebut?", optA: "Amfibi", optB: "Reptil", correct: "A", timer: 10, category: "IPA" },
+                { text: "Planet yang terdekat dengan Matahari adalah?", optA: "Merkurius", optB: "Venus", correct: "A", timer: 10, category: "IPA" },
+                { text: "Energi utama bagi kehidupan di bumi berasal dari?", optA: "Matahari", optB: "Batu Bara", correct: "A", timer: 10, category: "IPA" },
+                { text: "Satuan untuk mengukur kuat arus listrik adalah?", optA: "Volt", optB: "Ampere", correct: "B", timer: 10, category: "IPA" },
+                { text: "Gas yang kita hirup saat bernapas adalah?", optA: "Oksigen", optB: "Karbondioksida", correct: "A", timer: 10, category: "IPA" },
+                { text: "Proses penguapan air laut membentuk awan disebut?", optA: "Evaporasi", optB: "Kondensasi", correct: "A", timer: 10, category: "IPA" }
+            ],
+            B_INDO: [
+                { text: "Ide pokok dalam sebuah paragraf disebut juga dengan?", optA: "Gagasan Utama", optB: "Gagasan Penjelas", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Lawan kata (antonim) dari kata 'Pemurah' adalah?", optA: "Kikir", optB: "Dermawan", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Persamaan kata dari kata 'Paras' adalah?", optA: "Suara", optB: "Wajah", correct: "B", timer: 10, category: "B. Indonesia" },
+                { text: "Kalimat yang memerlukan tanggapan atau jawaban dinamakan?", optA: "Kalimat Tanya", optB: "Kalimat Perintah", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Karya sastra berbentuk puisi lama yang bersajak a-b-a-b adalah?", optA: "Pantun", optB: "Novel", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Kata dasar dari kata 'Memperbaiki' adalah?", optA: "Baik", optB: "Baiki", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Penulisan kata baku yang benar di bawah ini adalah?", optA: "Apotek", optB: "Apotik", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Tanda baca yang digunakan untuk mengakhiri kalimat berita adalah?", optA: "Tanda Titik (.)", optB: "Tanda Tanya (?)", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Unsur intrinsik cerita yang menunjukkan tempat dan waktu dinamakan?", optA: "Latar / Setting", optB: "Amanat", correct: "A", timer: 10, category: "B. Indonesia" },
+                { text: "Pesan moral dalam suatu cerita pendek dinamakan?", optA: "Amanat", optB: "Tema", correct: "A", timer: 10, category: "B. Indonesia" }
+            ],
+            B_ING: [
+                { text: "What is the English word for 'Kucing'?", optA: "Dog", optB: "Cat", correct: "B", timer: 10, category: "B. Inggris" },
+                { text: "What color is the sky on a clear day?", optA: "Blue", optB: "Green", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "Translate to English: 'Saya suka membaca buku'", optA: "I like reading books", optB: "I hate reading books", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "What is the opposite of 'Big'?", optA: "Small", optB: "Tall", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "Which one is a fruit?", optA: "Apple", optB: "Carrot", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "What do we use to write on paper?", optA: "Pen", optB: "Spoon", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "How many days are there in a week?", optA: "Seven", optB: "Twelve", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "'Good Morning' means?", optA: "Selamat Pagi", optB: "Selamat Malam", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "What is the past tense of 'Go'?", optA: "Went", optB: "Gone", correct: "A", timer: 10, category: "B. Inggris" },
+                { text: "The capital city of Indonesia in English is spelled?", optA: "Jakarta", optB: "Jakartech", correct: "A", timer: 10, category: "B. Inggris" }
+            ],
+            TIK: [
+                { text: "Perangkat keras komputer yang berfungsi sebagai penunjuk/kursor dinamakan?", optA: "Mouse", optB: "Keyboard", correct: "A", timer: 10, category: "TIK" },
+                { text: "Singkatan dari WWW dalam jaringan internet adalah?", optA: "World Wide Web", optB: "Wide World Web", correct: "A", timer: 10, category: "TIK" },
+                { text: "Kombinasi tombol keyboard untuk menyalin (copy) teks adalah?", optA: "Ctrl + C", optB: "Ctrl + V", correct: "A", timer: 10, category: "TIK" },
+                { text: "Otak dari sebuah komputer dinamakan?", optA: "CPU", optB: "RAM", correct: "A", timer: 10, category: "TIK" },
+                { text: "Aplikasi yang digunakan untuk mengolah kata adalah?", optA: "Microsoft Word", optB: "Microsoft Excel", correct: "A", timer: 10, category: "TIK" },
+                { text: "Perangkat yang digunakan untuk mencetak dokumen ke kertas dinamakan?", optA: "Printer", optB: "Scanner", correct: "A", timer: 10, category: "TIK" },
+                { text: "Singkatan dari RAM adalah?", optA: "Random Access Memory", optB: "Read Access Memory", correct: "A", timer: 10, category: "TIK" },
+                { text: "Sistem operasi buatan Microsoft yang paling umum digunakan adalah?", optA: "Windows", optB: "Android", correct: "A", timer: 10, category: "TIK" },
+                { text: "Kombinasi tombol keyboard untuk menempelkan (paste) teks adalah?", optA: "Ctrl + V", optB: "Ctrl + X", correct: "A", timer: 10, category: "TIK" },
+                { text: "Jaringan komputer nirkabel tanpa kabel sering disebut?", optA: "Wi-Fi", optB: "LAN Cable", correct: "A", timer: 10, category: "TIK" }
+            ],
+            PJOK: [
+                { text: "Jumlah pemain dalam satu tim sepak bola di lapangan adalah?", optA: "11 Orang", optB: "6 Orang", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Induk organisasi bola basket di Indonesia dinamakan?", optA: "PERBASI", optB: "PSSI", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Gerakan melatih kekuatan otot perut dinamakan?", optA: "Sit-up", optB: "Push-up", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Lari jarak pendek sering disebut juga dengan istilah?", optA: "Sprint", optB: "Maraton", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Gaya berenang yang mirip dengan gerakan katak dinamakan?", optA: "Gaya Dada", optB: "Gaya Bebas", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Gerakan memukul bola voli di udara secara tajam ke area lawan dinamakan?", optA: "Smash", optB: "Passing", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Penyakit yang disebabkan oleh kurangnya aktivitas olahraga dinamakan?", optA: "Hipokesia", optB: "Sedentari", correct: "B", timer: 10, category: "PJOK" },
+                { text: "Jumlah babak normal dalam pertandingan bulu tangkis adalah?", optA: "2-3 Babak", optB: "4 Babak", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Latihan melompat dan mendarat dapat melatih kekuatan otot?", optA: "Kaki", optB: "Tangan", correct: "A", timer: 10, category: "PJOK" },
+                { text: "Olahraga senam lantai yang menggelindingkan badan ke depan dinamakan?", optA: "Guling Depan", optB: "Kayang", correct: "A", timer: 10, category: "PJOK" }
+            ],
+            UMUM: [
+                { text: "Ibu kota dari Negara Republik Indonesia saat ini adalah?", optA: "Jakarta", optB: "Surabaya", correct: "A", timer: 10, category: "Umum" },
+                { text: "Mata uang resmi negara Jepang dinamakan?", optA: "Yen", optB: "Won", correct: "A", timer: 10, category: "Umum" },
+                { text: "Lagu kebangsaan Indonesia berjudul?", optA: "Indonesia Raya", optB: "Garuda Pancasila", correct: "A", timer: 10, category: "Umum" },
+                { text: "Tanggal berapa Hari Kemerdekaan Republik Indonesia diperingati?", optA: "17 Agustus", optB: "28 Oktober", correct: "A", timer: 10, category: "Umum" },
+                { text: "Candi Buddha terbesar di dunia yang terletak di Indonesia adalah?", optA: "Borobudur", optB: "Prambanan", correct: "A", timer: 10, category: "Umum" },
+                { text: "Bendera Negara Indonesia terdiri dari warna?", optA: "Merah Putih", optB: "Merah Putih Biru", correct: "A", timer: 10, category: "Umum" },
+                { text: "Lambang Negara Republik Indonesia adalah?", optA: "Burung Garuda", optB: "Harimau", correct: "A", timer: 10, category: "Umum" },
+                { text: "Benua terbesar di dunia adalah Benua?", optA: "Asia", optB: "Eropa", correct: "A", timer: 10, category: "Umum" },
+                { text: "Jumlah sila dalam Pancasila adalah?", optA: "5 Sila", optB: "6 Sila", correct: "A", timer: 10, category: "Umum" },
+                { text: "Presiden pertama Republik Indonesia adalah?", optA: "Ir. Soekarno", optB: "Drs. Mohammad Hatta", correct: "A", timer: 10, category: "Umum" }
+            ]
+        };
 
         // Game State Variables
         let activeQuestions = [];
@@ -654,6 +771,7 @@
             const subtitle = document.getElementById('setting-app-subtitle').value.trim();
             const timerVal = parseInt(document.getElementById('setting-default-timer').value) || 10;
             soundEnabled = document.getElementById('setting-sound-enabled').checked;
+            forceGeneralTimer = document.getElementById('setting-force-general-timer').checked;
 
             if (title) {
                 document.getElementById('app-title-display').childNodes[0].nodeValue = title + " ";
@@ -664,6 +782,26 @@
 
             defaultQuestionTimer = timerVal;
             alert("Pengaturan Umum Berhasil Disimpan!");
+        }
+
+        // TAMBAH PRESET SOAL SUBJEK
+        function addPresetSubjectQuestions(subjectKey) {
+            if (subjectPresets[subjectKey]) {
+                const newItems = subjectPresets[subjectKey].map((q, i) => ({
+                    ...q,
+                    id: Date.now() + Math.random() + i
+                }));
+                questions = questions.concat(newItems);
+                renderQuestionsList();
+                alert(`Berhasil menambahkan 10 soal ${subjectKey.replace('_', ' ')}! Total soal saat ini: ${questions.length}`);
+            }
+        }
+
+        function clearAllQuestions() {
+            if (confirm("Apakah Anda yakin ingin menghapus semua soal dari daftar?")) {
+                questions = [];
+                renderQuestionsList();
+            }
         }
 
         // CAMERA SETUP
@@ -739,7 +877,13 @@
             document.getElementById('pause-icon').setAttribute('data-lucide', 'pause');
             lucide.createIcons();
 
-            timerCountdown = parseInt(q.timer) || defaultQuestionTimer;
+            // REVISI LOGIK WAKTU: JIKA PAKSA WAKTU UMUM AKTIF, GUNAKAN defaultQuestionTimer
+            if (forceGeneralTimer) {
+                timerCountdown = defaultQuestionTimer;
+            } else {
+                timerCountdown = parseInt(q.timer) || defaultQuestionTimer;
+            }
+
             document.getElementById('timer-text').innerText = timerCountdown;
             
             clearInterval(timerInterval);
@@ -969,7 +1113,10 @@
                     <div class="flex items-start gap-2">
                         <span class="bg-slate-800/80 text-indigo-300 font-bold text-[10px] px-2 py-0.5 rounded border border-slate-700/60">${idx + 1}</span>
                         <div>
-                            <h5 class="font-bold text-white text-xs">${q.text}</h5>
+                            <div class="flex items-center gap-2">
+                                <h5 class="font-bold text-white text-xs">${q.text}</h5>
+                                <span class="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.2 rounded border border-indigo-500/30">${q.category || 'Umum'}</span>
+                            </div>
                             <div class="flex gap-3 text-[10px] text-slate-300/80 mt-0.5">
                                 <span class="${q.correct === 'A' ? 'text-emerald-400 font-bold' : ''}">Kiri (A): ${q.optA}</span>
                                 <span class="${q.correct === 'B' ? 'text-emerald-400 font-bold' : ''}">Kanan (B): ${q.optB}</span>
