@@ -61,8 +61,8 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #1e293b;
@@ -82,35 +82,48 @@
     <div id="flash-overlay" class="fixed inset-0 bg-white z-50 pointer-events-none opacity-0"></div>
 
     <!-- Header / Navbar Top -->
-    <header class="bg-slate-900/90 border-b border-slate-800 px-6 py-3 flex justify-between items-center z-30 shadow-lg backdrop-blur">
-        <div class="flex items-center gap-3">
-            <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-500/30">
-                <i data-lucide="camera" class="w-6 h-6"></i>
+    <header class="bg-slate-900/90 border-b border-slate-800 px-3 md:px-6 py-2 flex justify-between items-center z-30 shadow-lg backdrop-blur">
+        <div class="flex items-center gap-2 md:gap-3">
+            <div class="bg-indigo-600 p-1.5 md:p-2 rounded-lg text-white shadow-md shadow-indigo-500/20">
+                <i data-lucide="camera" class="w-4 h-4 md:w-5 md:h-5"></i>
             </div>
             <div>
-                <h1 class="font-extrabold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
-                    ZONE MOVE <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full ml-1">Motion Quiz</span>
+                <h1 class="font-extrabold text-sm md:text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
+                    ZONE MOVE <span class="hidden sm:inline-block text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.2 rounded-full ml-1">Motion Quiz</span>
                 </h1>
-                <p class="text-xs text-slate-400">Game Pembelajaran Interaktif Berbasis Gerak Kamera</p>
+                <p class="text-[10px] md:text-xs text-slate-400 hidden sm:block">Game Pembelajaran Interaktif Berbasis Gerak Kamera</p>
             </div>
         </div>
 
         <!-- Controls / Nav Action -->
-        <div class="flex items-center gap-3">
-            <div id="game-stats-header" class="hidden flex items-center gap-4 bg-slate-800/80 border border-slate-700/60 px-4 py-1.5 rounded-full text-sm">
+        <div class="flex items-center gap-1.5 md:gap-2">
+            <div id="game-stats-header" class="hidden flex items-center gap-2 md:gap-3 bg-slate-800/80 border border-slate-700/60 px-2.5 py-1 rounded-full text-xs">
                 <span class="text-slate-400">Soal: <strong id="header-question-count" class="text-indigo-400">1/10</strong></span>
                 <span class="text-slate-600">|</span>
-                <span class="text-slate-400">Siswa Aktif: <strong id="header-active-students" class="text-emerald-400">0</strong></span>
+                <span class="text-slate-400">Aktif: <strong id="header-active-students" class="text-emerald-400">0</strong></span>
             </div>
 
-            <button id="btn-fullscreen" onclick="toggleFullScreen()" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700 flex items-center gap-2 text-sm font-semibold">
-                <i data-lucide="maximize" class="w-4 h-4"></i>
+            <!-- PAUSE & QUIT BUTTONS (Compact sizes) -->
+            <div id="gameplay-controls" class="hidden flex items-center gap-1.5">
+                <button id="btn-pause" onclick="togglePause()" class="p-1.5 md:px-2.5 md:py-1.5 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition shadow-md shadow-amber-600/20 flex items-center gap-1 text-xs font-semibold">
+                    <i data-lucide="pause" id="pause-icon" class="w-3.5 h-3.5"></i>
+                    <span id="pause-btn-text" class="hidden md:inline">Pause</span>
+                </button>
+                <button id="btn-quit" onclick="confirmQuitGame()" class="p-1.5 md:px-2.5 md:py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-lg transition shadow-md shadow-rose-600/20 flex items-center gap-1 text-xs font-semibold">
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                    <span class="hidden md:inline">Quit</span>
+                </button>
+            </div>
+
+            <!-- Fullscreen Button (Auto hides when in fullscreen mode) -->
+            <button id="btn-fullscreen" onclick="toggleFullScreen()" class="p-1.5 md:px-2.5 md:py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition border border-slate-700 flex items-center gap-1 text-xs font-semibold">
+                <i data-lucide="maximize" class="w-3.5 h-3.5"></i>
                 <span class="hidden md:inline">Layar Penuh</span>
             </button>
 
-            <button id="btn-settings" onclick="openSettingsModal()" class="p-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center gap-2 text-sm font-semibold">
-                <i data-lucide="settings" class="w-4 h-4"></i>
-                <span class="hidden md:inline">Pengaturan & Soal</span>
+            <button id="btn-settings" onclick="openSettingsModal()" class="p-1.5 md:px-2.5 md:py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition shadow-md shadow-indigo-600/20 flex items-center gap-1 text-xs font-semibold">
+                <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                <span class="hidden md:inline">Pengaturan</span>
             </button>
         </div>
     </header>
@@ -118,19 +131,38 @@
     <!-- MAIN GAME AREA -->
     <main class="relative flex-1 bg-black flex flex-col justify-center items-center overflow-hidden">
         
-        <!-- SCREEN 1: LOBBY / START -->
-        <div id="screen-lobby" class="z-20 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto my-auto">
-            <div class="w-20 h-20 bg-indigo-600/20 text-indigo-400 border border-indigo-500/40 rounded-3xl flex items-center justify-center mb-6 shadow-2xl shadow-indigo-500/20 animate-bounce">
-                <i data-lucide="play" class="w-10 h-10 ml-1"></i>
+        <!-- PAUSE OVERLAY -->
+        <div id="pause-overlay" class="hidden absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-14 h-14 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-2xl flex items-center justify-center mb-3 shadow-xl">
+                <i data-lucide="pause" class="w-7 h-7"></i>
             </div>
-            <h2 class="text-4xl font-extrabold text-white mb-3 tracking-tight">Siap Bermain & Belajar?</h2>
-            <p class="text-slate-400 text-base mb-8 leading-relaxed">
+            <h2 class="text-xl md:text-2xl font-extrabold text-white mb-1">Permainan Dihentikan</h2>
+            <p class="text-slate-400 text-xs mb-5">Waktu dihentikan sementara.</p>
+            <div class="flex gap-3">
+                <button onclick="togglePause()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2 px-4 rounded-lg shadow-md transition flex items-center gap-1.5">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    Lanjutkan
+                </button>
+                <button onclick="confirmQuitGame()" class="bg-slate-800 hover:bg-slate-700 text-rose-400 border border-slate-700 font-bold text-xs py-2 px-4 rounded-lg transition flex items-center gap-1.5">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    Keluar Menu
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 1: LOBBY / START -->
+        <div id="screen-lobby" class="z-20 flex flex-col items-center justify-center p-4 text-center max-w-xl mx-auto my-auto">
+            <div class="w-14 h-14 md:w-16 md:h-16 bg-indigo-600/20 text-indigo-400 border border-indigo-500/40 rounded-2xl flex items-center justify-center mb-4 shadow-xl animate-bounce">
+                <i data-lucide="play" class="w-7 h-7 md:w-8 md:h-8 ml-0.5"></i>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-2 tracking-tight">Siap Bermain & Belajar?</h2>
+            <p class="text-slate-400 text-xs md:text-sm mb-6 leading-relaxed">
                 Bagi area kelas menjadi dua sisi (Kiri dan Kanan). Baca soal di layar, lalu berpindahlah ke zona jawaban yang benar sebelum waktu habis!
             </p>
 
-            <div class="flex flex-wrap gap-4 justify-center items-center w-full max-w-md">
-                <button onclick="startGame()" class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-2xl shadow-xl shadow-indigo-600/30 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 text-lg">
-                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+            <div class="flex flex-wrap gap-3 justify-center items-center w-full max-w-xs">
+                <button onclick="startGame()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-2.5 px-5 rounded-xl shadow-lg shadow-indigo-600/20 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
                     MULAI PERMAINAN
                 </button>
             </div>
@@ -140,13 +172,13 @@
         <div id="screen-gameplay" class="hidden absolute inset-0 w-full h-full flex flex-col">
             
             <!-- Question Top Banner -->
-            <div class="absolute top-4 inset-x-4 z-20 flex justify-center">
-                <div class="bg-slate-900/90 border-2 border-indigo-500/50 rounded-2xl p-4 shadow-2xl max-w-4xl w-full text-center backdrop-blur flex flex-col items-center gap-1">
-                    <div class="flex justify-between items-center w-full text-xs font-semibold uppercase tracking-wider text-indigo-400 px-2 mb-1">
+            <div class="absolute top-2 md:top-4 inset-x-2 md:inset-x-4 z-20 flex justify-center">
+                <div class="bg-slate-900/90 border border-indigo-500/40 rounded-xl p-2.5 md:p-3 shadow-xl max-w-3xl w-full text-center backdrop-blur flex flex-col items-center gap-0.5">
+                    <div class="flex justify-between items-center w-full text-[10px] md:text-xs font-semibold uppercase tracking-wider text-indigo-400 px-1">
                         <span id="question-category">Kategori: Umum</span>
                         <span id="question-progress">Pertanyaan 1 dari 5</span>
                     </div>
-                    <h2 id="question-text" class="text-xl md:text-2xl font-black text-white leading-snug">
+                    <h2 id="question-text" class="text-sm sm:text-base md:text-xl font-black text-white leading-snug">
                         Memuat Pertanyaan...
                     </h2>
                 </div>
@@ -162,237 +194,232 @@
                 <canvas id="snapshot-canvas" class="hidden"></canvas>
 
                 <!-- Center Divider Line -->
-                <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1.5 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 z-10 shadow-[0_0_15px_rgba(99,102,241,0.8)]"></div>
+                <div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-1 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 z-10 shadow-[0_0_10px_rgba(99,102,241,0.8)]"></div>
 
                 <!-- Overlay Split Zones -->
                 <div class="absolute inset-0 w-full h-full flex z-10">
                     
                     <!-- LEFT ZONE (ZONA A) -->
-                    <div id="zone-left" class="w-1/2 h-full border-r-2 border-slate-700/50 transition-all duration-300 flex flex-col justify-end p-8 relative">
-                        <div id="zone-left-badge" class="absolute top-28 left-6 bg-slate-900/80 border border-slate-700 text-slate-300 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg backdrop-blur flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span> ZONA KIRI (A)
+                    <div id="zone-left" class="w-1/2 h-full border-r border-slate-700/40 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative">
+                        <div id="zone-left-badge" class="absolute top-16 md:top-24 left-2 md:left-4 bg-slate-900/80 border border-slate-700 text-slate-300 text-[10px] md:text-xs font-bold px-2 py-1 rounded-full shadow backdrop-blur flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> KIRI (A)
                         </div>
-                        <div class="bg-slate-900/85 border border-indigo-500/40 backdrop-blur-md rounded-2xl p-6 shadow-2xl text-white">
-                            <div class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-1">Opsi Jawaban A</div>
-                            <div id="option-a-text" class="text-xl md:text-2xl font-extrabold leading-tight">Jawaban A</div>
+                        <div class="bg-slate-900/85 border border-indigo-500/40 backdrop-blur-md rounded-xl p-3 md:p-4 shadow-xl text-white">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 mb-0.5">Opsi A</div>
+                            <div id="option-a-text" class="text-xs sm:text-sm md:text-lg font-extrabold leading-tight">Jawaban A</div>
                         </div>
                     </div>
 
                     <!-- RIGHT ZONE (ZONA B) -->
-                    <div id="zone-right" class="w-1/2 h-full border-l-2 border-slate-700/50 transition-all duration-300 flex flex-col justify-end p-8 relative">
-                        <div id="zone-right-badge" class="absolute top-28 right-6 bg-slate-900/80 border border-slate-700 text-slate-300 text-xs font-bold px-4 py-1.5 rounded-full shadow-lg backdrop-blur flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-purple-500"></span> ZONA KANAN (B)
+                    <div id="zone-right" class="w-1/2 h-full border-l border-slate-700/40 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative">
+                        <div id="zone-right-badge" class="absolute top-16 md:top-24 right-2 md:right-4 bg-slate-900/80 border border-slate-700 text-slate-300 text-[10px] md:text-xs font-bold px-2 py-1 rounded-full shadow backdrop-blur flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span> KANAN (B)
                         </div>
-                        <div class="bg-slate-900/85 border border-purple-500/40 backdrop-blur-md rounded-2xl p-6 shadow-2xl text-white">
-                            <div class="text-xs font-bold uppercase tracking-wider text-purple-400 mb-1">Opsi Jawaban B</div>
-                            <div id="option-b-text" class="text-xl md:text-2xl font-extrabold leading-tight">Jawaban B</div>
+                        <div class="bg-slate-900/85 border border-purple-500/40 backdrop-blur-md rounded-xl p-3 md:p-4 shadow-xl text-white">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-purple-400 mb-0.5">Opsi B</div>
+                            <div id="option-b-text" class="text-xs sm:text-sm md:text-lg font-extrabold leading-tight">Jawaban B</div>
                         </div>
                     </div>
 
                 </div>
 
                 <!-- Countdown Timer Overlay -->
-                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
-                    <div id="timer-box" class="bg-slate-900/90 border-2 border-indigo-500 px-8 py-3 rounded-2xl shadow-2xl backdrop-blur flex items-center gap-4">
-                        <i data-lucide="clock" class="w-7 h-7 text-indigo-400 animate-spin"></i>
-                        <span id="timer-text" class="text-4xl font-black tracking-widest text-white font-mono">10</span>
-                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Detik</span>
+                <div class="absolute bottom-3 md:bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+                    <div id="timer-box" class="bg-slate-900/90 border border-indigo-500/60 px-4 py-1.5 md:px-6 md:py-2 rounded-xl shadow-xl backdrop-blur flex items-center gap-2">
+                        <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-indigo-400 animate-spin"></i>
+                        <span id="timer-text" class="text-xl md:text-3xl font-black tracking-widest text-white font-mono">10</span>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase">Detik</span>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- SCREEN 3: EVALUATION & ELIMINATION MODAL -->
-        <div id="screen-eval" class="hidden fixed inset-0 z-40 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- SCREEN 3: EVALUATION MODAL -->
+        <div id="screen-eval" class="hidden fixed inset-0 z-40 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 md:p-4">
+            <div class="bg-slate-900 border border-slate-800 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
                 
                 <!-- Modal Header -->
-                <div class="bg-slate-800/80 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl">
-                            <i data-lucide="camera" class="w-5 h-5"></i>
+                <div class="bg-slate-800/80 px-4 py-2.5 border-b border-slate-700 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="p-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg">
+                            <i data-lucide="camera" class="w-4 h-4"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-white">Bukti Posisi & Eliminasi Siswa</h3>
-                            <p class="text-xs text-slate-400">Jepretan otomatis saat detik ke-0 & Kunci Jawaban</p>
+                            <h3 class="text-xs md:text-sm font-bold text-white">Bukti Posisi & Eliminasi Siswa</h3>
+                            <p class="text-[10px] text-slate-400">Jepretan otomatis saat detik ke-0</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-xs text-slate-400 block">Jawaban Benar:</span>
-                        <span id="eval-correct-answer-text" class="text-emerald-400 font-extrabold text-lg">ZONA KIRI (A)</span>
+                        <span class="text-[10px] text-slate-400 block">Jawaban Benar:</span>
+                        <span id="eval-correct-answer-text" class="text-emerald-400 font-extrabold text-xs md:text-sm">ZONA KIRI (A)</span>
                     </div>
                 </div>
 
-                <!-- Modal Body (Grid: Snapshot + Checklist Siswa) -->
-                <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 overflow-y-auto flex-1">
+                <!-- Modal Body -->
+                <div class="p-4 grid grid-cols-1 md:grid-cols-12 gap-4 overflow-y-auto flex-1">
                     
                     <!-- Left Column: Snapshot Image -->
-                    <div class="lg:col-span-7 flex flex-col gap-3">
-                        <div class="relative bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-xl aspect-video flex items-center justify-center">
+                    <div class="md:col-span-7 flex flex-col gap-2">
+                        <div class="relative bg-black rounded-xl overflow-hidden border border-slate-700 shadow-md aspect-video flex items-center justify-center">
                             <img id="eval-snapshot-img" src="" alt="Jepretan Kamera" class="w-full h-full object-cover">
-                            <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur px-3 py-1 rounded-lg text-xs font-semibold text-slate-300 border border-slate-700">
-                                📸 Bukti Foto Posisi Real-time
-                            </div>
                         </div>
-                        <div class="bg-indigo-950/40 border border-indigo-800/50 rounded-xl p-3 text-xs text-indigo-300 flex items-start gap-2">
-                            <i data-lucide="info" class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5"></i>
-                            <span>Perhatikan foto! Coret/Centang nama siswa di sebelah kanan jika mereka berdiri di **ZONA SALAH** untuk mengeliminasi mereka dari permainan.</span>
+                        <div class="bg-indigo-950/40 border border-indigo-800/50 rounded-lg p-2 text-[11px] text-indigo-300 flex items-start gap-1.5">
+                            <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5"></i>
+                            <span>Klik nama siswa jika berdiri di **ZONA SALAH** untuk mengeliminasi.</span>
                         </div>
                     </div>
 
                     <!-- Right Column: Student Elimination List -->
-                    <div class="lg:col-span-5 flex flex-col bg-slate-800/50 border border-slate-700/60 rounded-2xl p-4">
-                        <div class="flex justify-between items-center mb-3">
-                            <h4 class="font-bold text-sm text-slate-200 flex items-center gap-2">
-                                <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
-                                Kelola Siswa / Peserta
+                    <div class="md:col-span-5 flex flex-col bg-slate-800/50 border border-slate-700/60 rounded-xl p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-bold text-xs text-slate-200 flex items-center gap-1.5">
+                                <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-400"></i>
+                                Kelola Siswa
                             </h4>
-                            <span id="eval-active-count-badge" class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
+                            <span id="eval-active-count-badge" class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
                                 0 Aktif
                             </span>
                         </div>
 
                         <!-- Scrollable Student List -->
-                        <div id="eval-student-checklist" class="flex-1 overflow-y-auto pr-1 space-y-2 max-h-64 lg:max-h-80">
-                            <!-- Populated dynamically via JS -->
+                        <div id="eval-student-checklist" class="flex-1 overflow-y-auto pr-1 space-y-1.5 max-h-48 md:max-h-64">
+                            <!-- Populated dynamically -->
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Modal Footer / Actions -->
-                <div class="bg-slate-800/80 px-6 py-4 border-t border-slate-700 flex justify-between items-center">
-                    <div class="text-xs text-slate-400">
-                        Klik nama siswa untuk mengubah status <span class="text-emerald-400 font-bold">Aktif</span> / <span class="text-rose-400 font-bold">Gugur</span>.
-                    </div>
-                    <button onclick="nextQuestion()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center gap-2">
+                <!-- Modal Footer -->
+                <div class="bg-slate-800/80 px-4 py-2.5 border-t border-slate-700 flex justify-between items-center">
+                    <span class="text-[10px] text-slate-400">Pilih status siswa untuk melanjutkan.</span>
+                    <button onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2 px-4 rounded-lg shadow transition flex items-center gap-1.5">
                         <span>Soal Berikutnya</span>
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </div>
 
             </div>
         </div>
 
-        <!-- SCREEN 4: GAME OVER / LEADERBOARD -->
-        <div id="screen-gameover" class="hidden z-20 flex flex-col items-center justify-center p-6 text-center max-w-2xl mx-auto my-auto">
-            <div class="w-20 h-20 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-3xl flex items-center justify-center mb-6 shadow-2xl shadow-amber-500/20">
-                <i data-lucide="trophy" class="w-10 h-10"></i>
+        <!-- SCREEN 4: GAME OVER -->
+        <div id="screen-gameover" class="hidden z-20 flex flex-col items-center justify-center p-4 text-center max-w-lg mx-auto my-auto">
+            <div class="w-14 h-14 bg-amber-500/20 text-amber-400 border border-amber-500/40 rounded-2xl flex items-center justify-center mb-4 shadow-xl">
+                <i data-lucide="trophy" class="w-7 h-7"></i>
             </div>
-            <h2 class="text-4xl font-black text-white mb-2">Permainan Selesai!</h2>
-            <p class="text-slate-400 text-sm mb-6">Berikut adalah daftar siswa yang berhasil bertahan hingga akhir permainan:</p>
+            <h2 class="text-2xl md:text-3xl font-black text-white mb-1">Permainan Selesai!</h2>
+            <p class="text-slate-400 text-xs mb-4">Siswa yang berhasil bertahan hingga akhir:</p>
 
             <!-- Survivors List -->
-            <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl mb-8 max-h-60 overflow-y-auto text-left">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                    <i data-lucide="award" class="w-4 h-4 text-emerald-400"></i>
-                    Siswa Selamat / Pemenang
-                </h3>
-                <div id="gameover-survivors-list" class="space-y-2">
+            <div class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl mb-6 max-h-48 overflow-y-auto text-left">
+                <div id="gameover-survivors-list" class="space-y-1.5">
                     <!-- Populated dynamically -->
                 </div>
             </div>
 
-            <button onclick="returnToLobby()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-3.5 px-8 rounded-xl border border-slate-700 transition flex items-center gap-2">
-                <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+            <button onclick="returnToLobby()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs py-2.5 px-5 rounded-lg border border-slate-700 transition flex items-center gap-2">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                 Kembali ke Menu Utama
             </button>
         </div>
 
     </main>
 
-    <!-- SETTINGS & CUSTOMIZATION MODAL -->
-    <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <!-- FOOTER WATERMARK -->
+    <footer class="bg-slate-950 border-t border-slate-800/60 py-1.5 px-4 text-center z-20">
+        <p class="text-[11px] text-slate-400 tracking-wide font-medium">
+            Made by <span class="text-indigo-400 font-bold">Galih Ramandha Rizki S.Kom</span>
+        </p>
+    </footer>
+
+    <!-- SETTINGS MODAL -->
+    <div id="modal-settings" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 md:p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             
             <!-- Settings Header -->
-            <div class="bg-slate-800/80 px-6 py-4 border-b border-slate-700 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-indigo-600 text-white rounded-xl">
-                        <i data-lucide="sliders" class="w-5 h-5"></i>
+            <div class="bg-slate-800/80 px-4 py-3 border-b border-slate-700 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-indigo-600 text-white rounded-lg">
+                        <i data-lucide="sliders" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-white">Pengaturan & Kustomisasi Game</h3>
-                        <p class="text-xs text-slate-400">Kelola bank soal, timer, dan daftar siswa</p>
+                        <h3 class="text-sm font-bold text-white">Pengaturan Game</h3>
+                        <p class="text-[10px] text-slate-400">Kelola soal dan siswa</p>
                     </div>
                 </div>
-                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 hover:bg-slate-700 transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
 
             <!-- Settings Tabs Navigation -->
-            <div class="flex border-b border-slate-800 bg-slate-900/50 px-6 pt-3 gap-2">
-                <button onclick="switchTab('tab-questions')" id="btn-tab-questions" class="tab-btn active border-b-2 border-indigo-500 text-indigo-400 font-bold px-4 py-2.5 text-sm flex items-center gap-2">
-                    <i data-lucide="help-circle" class="w-4 h-4"></i> Kelola Soal (<span id="tab-count-questions">0</span>)
+            <div class="flex border-b border-slate-800 bg-slate-900/50 px-4 pt-2 gap-1 overflow-x-auto">
+                <button onclick="switchTab('tab-questions')" id="btn-tab-questions" class="tab-btn active border-b-2 border-indigo-500 text-indigo-400 font-bold px-3 py-2 text-xs flex items-center gap-1 whitespace-nowrap">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Soal (<span id="tab-count-questions">0</span>)
                 </button>
-                <button onclick="switchTab('tab-import-q')" id="btn-tab-import-q" class="tab-btn border-b-2 border-transparent text-slate-400 font-bold px-4 py-2.5 text-sm flex items-center gap-2 hover:text-slate-200">
-                    <i data-lucide="file-up" class="w-4 h-4"></i> Import Masal Soal
+                <button onclick="switchTab('tab-import-q')" id="btn-tab-import-q" class="tab-btn border-b-2 border-transparent text-slate-400 font-bold px-3 py-2 text-xs flex items-center gap-1 hover:text-slate-200 whitespace-nowrap">
+                    <i data-lucide="file-up" class="w-3.5 h-3.5"></i> Import Masal
                 </button>
-                <button onclick="switchTab('tab-students')" id="btn-tab-students" class="tab-btn border-b-2 border-transparent text-slate-400 font-bold px-4 py-2.5 text-sm flex items-center gap-2 hover:text-slate-200">
-                    <i data-lucide="users" class="w-4 h-4"></i> Daftar Siswa (<span id="tab-count-students">0</span>)
-                </button>
-                <button onclick="switchTab('tab-general')" id="btn-tab-general" class="tab-btn border-b-2 border-transparent text-slate-400 font-bold px-4 py-2.5 text-sm flex items-center gap-2 hover:text-slate-200">
-                    <i data-lucide="settings" class="w-4 h-4"></i> Pengaturan Umum
+                <button onclick="switchTab('tab-students')" id="btn-tab-students" class="tab-btn border-b-2 border-transparent text-slate-400 font-bold px-3 py-2 text-xs flex items-center gap-1 hover:text-slate-200 whitespace-nowrap">
+                    <i data-lucide="users" class="w-3.5 h-3.5"></i> Siswa (<span id="tab-count-students">0</span>)
                 </button>
             </div>
 
             <!-- Tab Contents -->
-            <div class="p-6 overflow-y-auto flex-1">
+            <div class="p-4 overflow-y-auto flex-1">
                 
-                <!-- TAB 1: KELOLA SOAL (CRUD) -->
-                <div id="tab-questions" class="tab-content space-y-6">
+                <!-- TAB 1: KELOLA SOAL -->
+                <div id="tab-questions" class="tab-content space-y-4">
                     <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-slate-200 text-sm">Daftar Pertanyaan Saat Ini</h4>
-                        <button onclick="openQuestionForm()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Soal Manual
+                        <h4 class="font-bold text-slate-200 text-xs">Daftar Pertanyaan</h4>
+                        <button onclick="openQuestionForm()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3 h-3"></i> Tambah Soal
                         </button>
                     </div>
 
-                    <!-- Single Question Form (Hidden by Default) -->
-                    <div id="form-question-container" class="hidden bg-slate-800/80 border border-slate-700 rounded-2xl p-5 space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                            <h5 id="form-question-title" class="font-bold text-indigo-400 text-sm">Tambah Soal Baru</h5>
-                            <button onclick="closeQuestionForm()" class="text-slate-400 hover:text-slate-200 text-xs">Batal</button>
+                    <!-- Question Form -->
+                    <div id="form-question-container" class="hidden bg-slate-800/80 border border-slate-700 rounded-xl p-3 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                            <h5 id="form-question-title" class="font-bold text-indigo-400 text-xs">Tambah Soal Baru</h5>
+                            <button onclick="closeQuestionForm()" class="text-slate-400 hover:text-slate-200 text-[10px]">Batal</button>
                         </div>
                         <input type="hidden" id="q-edit-id">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1">Pertanyaan</label>
-                            <input type="text" id="q-text" placeholder="Contoh: Ibu kota Indonesia saat ini adalah?" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                            <label class="block text-[10px] font-semibold text-slate-400 mb-1">Pertanyaan</label>
+                            <input type="text" id="q-text" placeholder="Isi soal..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500">
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Opsi Kiri (Zona A)</label>
-                                <input type="text" id="q-opt-a" placeholder="Contoh: Jakarta" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Opsi Kiri (A)</label>
+                                <input type="text" id="q-opt-a" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Opsi Kanan (Zona B)</label>
-                                <input type="text" id="q-opt-b" placeholder="Contoh: Nusantara" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Opsi Kanan (B)</label>
+                                <input type="text" id="q-opt-b" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500">
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Jawaban Benar</label>
-                                <select id="q-correct" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                                    <option value="A">Opsi Kiri (Zona A)</option>
-                                    <option value="B">Opsi Kanan (Zona B)</option>
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Jawaban Benar</label>
+                                <select id="q-correct" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                    <option value="A">Opsi Kiri (A)</option>
+                                    <option value="B">Opsi Kanan (B)</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Batas Waktu (Detik)</label>
-                                <input type="number" id="q-timer" value="10" min="5" max="60" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                <label class="block text-[10px] font-semibold text-slate-400 mb-1">Timer (Detik)</label>
+                                <input type="number" id="q-timer" value="10" min="5" max="60" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white">
                             </div>
                         </div>
-                        <div class="flex justify-end gap-2 pt-2">
-                            <button onclick="saveQuestion()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition">Simpan Soal</button>
+                        <div class="flex justify-end pt-1">
+                            <button onclick="saveQuestion()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg transition">Simpan Soal</button>
                         </div>
                     </div>
 
                     <!-- Questions List Table -->
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden">
-                        <div id="questions-list-empty" class="p-8 text-center text-slate-500 text-sm">
-                            Belum ada soal. Silakan tambah manual atau pakai fitur Import Masal Soal.
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                        <div id="questions-list-empty" class="p-6 text-center text-slate-500 text-xs">
+                            Belum ada soal.
                         </div>
                         <div id="questions-list-container" class="divide-y divide-slate-800">
                             <!-- Populated dynamically -->
@@ -400,73 +427,46 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: IMPORT MASAL SOAL -->
-                <div id="tab-import-q" class="tab-content hidden space-y-4">
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Masukkan soal dalam jumlah banyak sekaligus menggunakan format CSV atau JSON di bawah ini.
-                    </p>
+                <!-- TAB 2: IMPORT MASAL -->
+                <div id="tab-import-q" class="tab-content hidden space-y-3">
+                    <p class="text-[10px] text-slate-400">Tempelkan data CSV atau JSON di bawah ini:</p>
 
-                    <div class="flex gap-2 mb-2">
-                        <button onclick="insertCSVExample()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-lg border border-slate-700">Contoh CSV</button>
-                        <button onclick="insertJSONExample()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-lg border border-slate-700">Contoh JSON</button>
+                    <div class="flex gap-2">
+                        <button onclick="insertCSVExample()" class="bg-slate-800 text-slate-300 text-[10px] px-2.5 py-1 rounded border border-slate-700">Contoh CSV</button>
+                        <button onclick="insertJSONExample()" class="bg-slate-800 text-slate-300 text-[10px] px-2.5 py-1 rounded border border-slate-700">Contoh JSON</button>
                     </div>
 
-                    <textarea id="import-questions-text" rows="8" placeholder="Tempelkan teks CSV atau JSON di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs font-mono text-indigo-300 focus:outline-none focus:border-indigo-500"></textarea>
+                    <textarea id="import-questions-text" rows="6" placeholder="Tempelkan di sini..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono text-indigo-300 focus:outline-none"></textarea>
 
-                    <div class="flex justify-between items-center pt-2">
-                        <label class="flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
-                            <input type="checkbox" id="import-replace-questions" class="rounded bg-slate-900 border-slate-700 text-indigo-600 focus:ring-0">
-                            <span>Hapus/ganti semua soal lama yang ada</span>
+                    <div class="flex justify-between items-center">
+                        <label class="flex items-center gap-1.5 text-[10px] text-slate-400 cursor-pointer">
+                            <input type="checkbox" id="import-replace-questions" class="rounded bg-slate-900 border-slate-700 text-indigo-600">
+                            <span>Hapus soal lama</span>
                         </label>
-                        <button onclick="processQuestionsImport()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-2">
-                            <i data-lucide="download" class="w-4 h-4"></i> Proses Import Soal
+                        <button onclick="processQuestionsImport()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Import Soal
                         </button>
                     </div>
                 </div>
 
                 <!-- TAB 3: DAFTAR SISWA -->
-                <div id="tab-students" class="tab-content hidden space-y-4">
-                    <p class="text-xs text-slate-400">
-                        Masukkan nama siswa/peserta didik (satu nama per baris). Siswa ini dapat dieliminasi secara manual setelah foto jepretan diambil.
-                    </p>
+                <div id="tab-students" class="tab-content hidden space-y-3">
+                    <p class="text-[10px] text-slate-400">Masukkan nama siswa (1 nama per baris):</p>
+                    <textarea id="import-students-text" rows="6" placeholder="Contoh:&#10;Andi&#10;Budi" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none"></textarea>
 
-                    <textarea id="import-students-text" rows="8" placeholder="Contoh:&#10;Andi Wijaya&#10;Budi Santoso&#10;Citra Lestari&#10;Dedi Kurniawan" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm font-sans text-white focus:outline-none focus:border-indigo-500"></textarea>
-
-                    <div class="flex justify-between items-center pt-2">
-                        <span class="text-xs text-slate-500">Siswa yang terhapus dari daftar akan diset ulang di game berikutnya.</span>
-                        <button onclick="saveStudentsList()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center gap-2">
-                            <i data-lucide="save" class="w-4 h-4"></i> Simpan Daftar Siswa
+                    <div class="flex justify-end">
+                        <button onclick="saveStudentsList()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-1.5 rounded-lg transition flex items-center gap-1">
+                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan Daftar Siswa
                         </button>
-                    </div>
-                </div>
-
-                <!-- TAB 4: PENGATURAN UMUM -->
-                <div id="tab-general" class="tab-content hidden space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between bg-slate-800/50 p-4 rounded-2xl border border-slate-800">
-                            <div>
-                                <h5 class="text-sm font-bold text-white">Acak Urutan Soal (Shuffle)</h5>
-                                <p class="text-xs text-slate-400">Tampilkan soal secara acak setiap kali permainan dimulai</p>
-                            </div>
-                            <input type="checkbox" id="setting-shuffle-questions" checked class="w-5 h-5 accent-indigo-600 rounded">
-                        </div>
-
-                        <div class="flex items-center justify-between bg-slate-800/50 p-4 rounded-2xl border border-slate-800">
-                            <div>
-                                <h5 class="text-sm font-bold text-white">Default Timer per Soal (Detik)</h5>
-                                <p class="text-xs text-slate-400">Digunakan jika timer soal tidak diset spesifik</p>
-                            </div>
-                            <input type="number" id="setting-default-timer" value="10" min="5" max="60" class="w-20 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-sm text-center text-white">
-                        </div>
                     </div>
                 </div>
 
             </div>
 
             <!-- Settings Footer -->
-            <div class="bg-slate-800/80 px-6 py-4 border-t border-slate-700 flex justify-end">
-                <button onclick="closeSettingsModal()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition">
-                    Selesai & Tutup
+            <div class="bg-slate-800/80 px-4 py-2 border-t border-slate-700 flex justify-end">
+                <button onclick="closeSettingsModal()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs px-4 py-1.5 rounded-lg transition">
+                    Tutup
                 </button>
             </div>
 
@@ -475,7 +475,7 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Default Sample Data
+        // Sample Data
         let questions = [
             { id: 1, text: "Manakah planet terbesar di Tata Surya kita?", optA: "Mars", optB: "Jupiter", correct: "B", timer: 10, category: "Sains" },
             { id: 2, text: "Proses tumbuhan membuat makanan sendiri dinamakan?", optA: "Fotosintesis", optB: "Respirasi", correct: "A", timer: 10, category: "Biologi" },
@@ -496,17 +496,17 @@
         let timerCountdown = 10;
         let timerInterval = null;
         let webcamStream = null;
-        let shuffleEnabled = true;
+        let isPaused = false;
 
-        // Web Audio Synthesizer (SFX without external files)
+        // Web Audio Synthesizer
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playBeep(freq = 440, duration = 0.1, type = 'sine') {
+
+        function playBeep(freq = 440, duration = 0.1) {
             try {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.type = type;
+                osc.type = 'sine';
                 osc.frequency.value = freq;
                 gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
@@ -517,29 +517,42 @@
             } catch(e){}
         }
 
-        function playShutterSound() {
+        // BUNYI 'TRING' HARMONIS & HALUS UNTUK JEPRET FOTO
+        function playChimeSound() {
             try {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
-                // Click noise
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.15);
+                const notes = [1318.51, 1975.53]; 
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.06));
+                    gain.gain.setValueAtTime(0, audioCtx.currentTime + (idx * 0.06));
+                    gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + (idx * 0.06) + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + (idx * 0.06) + 0.5);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + (idx * 0.06));
+                    osc.stop(audioCtx.currentTime + (idx * 0.06) + 0.5);
+                });
             } catch(e){}
         }
 
-        // Initialize App
+        // Initialize App & Fullscreen listener
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             renderQuestionsList();
             renderStudentsTextarea();
+
+            // Auto Hide Fullscreen Button when entering Fullscreen
+            document.addEventListener('fullscreenchange', () => {
+                const fsBtn = document.getElementById('btn-fullscreen');
+                if (document.fullscreenElement) {
+                    fsBtn.classList.add('hidden');
+                } else {
+                    fsBtn.classList.remove('hidden');
+                }
+            });
         });
 
         // FULLSCREEN TOGGLE
@@ -568,7 +581,7 @@
                     videoElement.onloadedmetadata = () => resolve(true);
                 });
             } catch (err) {
-                alert("Tidak dapat mengakses kamera webcam. Pastikan Anda telah memberikan izin akses kamera!");
+                alert("Tidak dapat mengakses kamera webcam!");
                 return false;
             }
         }
@@ -576,7 +589,7 @@
         // START GAME
         async function startGame() {
             if (questions.length === 0) {
-                alert("Harap masukkan minimal 1 soal terlebih dahulu di menu Pengaturan!");
+                alert("Harap masukkan minimal 1 soal di Pengaturan!");
                 openSettingsModal();
                 return;
             }
@@ -584,19 +597,18 @@
             const cameraReady = await setupCamera();
             if (!cameraReady) return;
 
-            // Prepare Questions
-            shuffleEnabled = document.getElementById('setting-shuffle-questions').checked;
-            activeQuestions = shuffleEnabled ? [...questions].sort(() => Math.random() - 0.5) : [...questions];
+            activeQuestions = [...questions].sort(() => Math.random() - 0.5);
             currentQuestionIndex = 0;
+            isPaused = false;
 
-            // Reset Students active status
             students.forEach(s => s.active = true);
 
-            // UI Transitions
             document.getElementById('screen-lobby').classList.add('hidden');
             document.getElementById('screen-gameover').classList.add('hidden');
+            document.getElementById('pause-overlay').classList.add('hidden');
             document.getElementById('screen-gameplay').classList.remove('hidden');
             document.getElementById('game-stats-header').classList.remove('hidden');
+            document.getElementById('gameplay-controls').classList.remove('hidden');
 
             loadQuestion(currentQuestionIndex);
         }
@@ -615,21 +627,27 @@
             document.getElementById('option-a-text').innerText = q.optA;
             document.getElementById('option-b-text').innerText = q.optB;
 
-            // Reset Zone Styles (No green/red initially, just neutral)
             const zoneLeft = document.getElementById('zone-left');
             const zoneRight = document.getElementById('zone-right');
-            zoneLeft.className = "w-1/2 h-full border-r-2 border-slate-700/50 transition-all duration-300 flex flex-col justify-end p-8 relative";
-            zoneRight.className = "w-1/2 h-full border-l-2 border-slate-700/50 transition-all duration-300 flex flex-col justify-end p-8 relative";
+            zoneLeft.className = "w-1/2 h-full border-r border-slate-700/40 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative";
+            zoneRight.className = "w-1/2 h-full border-l border-slate-700/40 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative";
 
             document.getElementById('header-question-count').innerText = `${index + 1}/${activeQuestions.length}`;
             updateActiveStudentsHeader();
 
-            // Start Timer
+            isPaused = false;
+            document.getElementById('pause-overlay').classList.add('hidden');
+            document.getElementById('pause-btn-text').innerText = "Pause";
+            document.getElementById('pause-icon').setAttribute('data-lucide', 'pause');
+            lucide.createIcons();
+
             timerCountdown = parseInt(q.timer) || 10;
             document.getElementById('timer-text').innerText = timerCountdown;
             
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
+                if (isPaused) return;
+
                 timerCountdown--;
                 document.getElementById('timer-text').innerText = timerCountdown;
                 
@@ -644,11 +662,36 @@
             }, 1000);
         }
 
-        // LOCK ANSWER & SNAPSHOT (DETIK KE-0)
-        function lockAnswerAndSnap() {
-            playShutterSound();
+        // PAUSE & QUIT LOGIC
+        function togglePause() {
+            isPaused = !isPaused;
+            const overlay = document.getElementById('pause-overlay');
+            const pauseText = document.getElementById('pause-btn-text');
+            const pauseIcon = document.getElementById('pause-icon');
 
-            // Flash Screen Effect
+            if (isPaused) {
+                overlay.classList.remove('hidden');
+                pauseText.innerText = "Lanjut";
+                pauseIcon.setAttribute('data-lucide', 'play');
+            } else {
+                overlay.classList.add('hidden');
+                pauseText.innerText = "Pause";
+                pauseIcon.setAttribute('data-lucide', 'pause');
+            }
+            lucide.createIcons();
+        }
+
+        function confirmQuitGame() {
+            if (confirm("Apakah Anda yakin ingin keluar dari permainan?")) {
+                clearInterval(timerInterval);
+                returnToLobby();
+            }
+        }
+
+        // LOCK ANSWER & SNAPSHOT
+        function lockAnswerAndSnap() {
+            playChimeSound();
+
             const flash = document.getElementById('flash-overlay');
             flash.classList.add('flash-active');
             setTimeout(() => flash.classList.remove('flash-active'), 400);
@@ -656,46 +699,41 @@
             const q = activeQuestions[currentQuestionIndex];
             const isCorrectA = q.correct === 'A';
 
-            // Highlight Correct Zone with Blinking Green Effect
             const correctZone = isCorrectA ? document.getElementById('zone-left') : document.getElementById('zone-right');
             const wrongZone = isCorrectA ? document.getElementById('zone-right') : document.getElementById('zone-left');
 
             correctZone.classList.add('correct-zone-blinking');
             wrongZone.classList.add('wrong-zone-dimmed');
 
-            // Capture Canvas Snapshot
             const video = document.getElementById('webcam-feed');
             const canvas = document.getElementById('snapshot-canvas');
             canvas.width = video.videoWidth || 1280;
             canvas.height = video.videoHeight || 720;
             const ctx = canvas.getContext('2d');
 
-            // Mirror snapshot image to match screen video
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Draw Zone Labels & Divider on Snapshot
-            ctx.scale(-1, 1); // Reset flip for text
-            ctx.fillStyle = isCorrectA ? "#22c55e" : "#475569";
-            ctx.font = "bold 32px sans-serif";
-            ctx.fillText(isCorrectA ? "✓ ZONA BENAR (A)" : "ZONA SALAH (A)", 40, 60);
+            ctx.scale(-1, 1);
+            ctx.fillStyle = isCorrectA ? "#22c55e" : "#94a3b8";
+            ctx.font = "bold 28px sans-serif";
+            ctx.fillText(isCorrectA ? "✓ ZONA BENAR (A)" : "ZONA SALAH (A)", 30, 50);
 
-            ctx.fillStyle = !isCorrectA ? "#22c55e" : "#475569";
-            ctx.fillText(!isCorrectA ? "✓ ZONA BENAR (B)" : "ZONA SALAH (B)", canvas.width / 2 + 40, 60);
+            ctx.fillStyle = !isCorrectA ? "#22c55e" : "#94a3b8";
+            ctx.fillText(!isCorrectA ? "✓ ZONA BENAR (B)" : "ZONA SALAH (B)", canvas.width / 2 + 30, 50);
 
             const dataURL = canvas.toDataURL('image/jpeg');
 
-            // Open Eval Modal after short delay
             setTimeout(() => {
                 showEvaluationModal(dataURL, q);
-            }, 1200);
+            }, 1000);
         }
 
-        // EVALUATION MODAL & ELIMINATION
+        // EVALUATION MODAL
         function showEvaluationModal(snapshotData, question) {
             document.getElementById('eval-snapshot-img').src = snapshotData;
-            document.getElementById('eval-correct-answer-text').innerText = question.correct === 'A' ? `ZONA KIRI (A) - ${question.optA}` : `ZONA KANAN (B) - ${question.optB}`;
+            document.getElementById('eval-correct-answer-text').innerText = question.correct === 'A' ? `ZONA KIRI (A)` : `ZONA KANAN (B)`;
 
             renderEvalStudentChecklist();
             document.getElementById('screen-eval').classList.remove('hidden');
@@ -710,24 +748,24 @@
                 if (s.active) activeCount++;
 
                 const item = document.createElement('div');
-                item.className = `flex justify-between items-center p-3 rounded-xl border transition cursor-pointer ${s.active ? 'bg-slate-800 border-slate-700 hover:border-slate-600' : 'bg-rose-950/30 border-rose-900/50 opacity-60'}`;
+                item.className = `flex justify-between items-center p-2 rounded-lg border transition cursor-pointer ${s.active ? 'bg-slate-800 border-slate-700' : 'bg-rose-950/30 border-rose-900/50 opacity-60'}`;
                 item.onclick = () => toggleStudentActive(s.id);
 
                 item.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-5 h-5 rounded-md flex items-center justify-center border ${s.active ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'bg-rose-600 border-rose-500 text-white'}">
-                            <i data-lucide="${s.active ? 'check' : 'x'}" class="w-3.5 h-3.5 stroke-[3]"></i>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded flex items-center justify-center border ${s.active ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'bg-rose-600 border-rose-500 text-white'}">
+                            <i data-lucide="${s.active ? 'check' : 'x'}" class="w-3 h-3 stroke-[3]"></i>
                         </div>
-                        <span class="text-sm font-semibold ${s.active ? 'text-white' : 'text-rose-300 line-through'}">${s.name}</span>
+                        <span class="text-xs font-semibold ${s.active ? 'text-white' : 'text-rose-300 line-through'}">${s.name}</span>
                     </div>
-                    <span class="text-xs px-2.5 py-0.5 rounded-full font-bold ${s.active ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'}">
+                    <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${s.active ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">
                         ${s.active ? 'AKTIFF' : 'GUGUR'}
                     </span>
                 `;
                 container.appendChild(item);
             });
 
-            document.getElementById('eval-active-count-badge').innerText = `${activeCount} Siswa Aktif`;
+            document.getElementById('eval-active-count-badge').innerText = `${activeCount} Aktif`;
             updateActiveStudentsHeader();
             lucide.createIcons();
         }
@@ -755,6 +793,8 @@
         function finishGame() {
             document.getElementById('screen-gameplay').classList.add('hidden');
             document.getElementById('screen-eval').classList.add('hidden');
+            document.getElementById('gameplay-controls').classList.add('hidden');
+            document.getElementById('pause-overlay').classList.add('hidden');
             document.getElementById('screen-gameover').classList.remove('hidden');
 
             const container = document.getElementById('gameover-survivors-list');
@@ -762,12 +802,12 @@
 
             const survivors = students.filter(s => s.active);
             if (survivors.length === 0) {
-                container.innerHTML = `<p class="text-rose-400 text-sm italic">Semua siswa telah tereliminasi/gugur.</p>`;
+                container.innerHTML = `<p class="text-rose-400 text-xs italic">Semua siswa tereliminasi.</p>`;
             } else {
                 survivors.forEach(s => {
                     const item = document.createElement('div');
-                    item.className = "flex items-center gap-3 p-3 bg-emerald-950/30 border border-emerald-800/40 rounded-xl text-emerald-300 font-bold text-sm";
-                    item.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> ${s.name}`;
+                    item.className = "flex items-center gap-2 p-2 bg-emerald-950/30 border border-emerald-800/40 rounded-lg text-emerald-300 font-bold text-xs";
+                    item.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i> ${s.name}`;
                     container.appendChild(item);
                 });
             }
@@ -778,14 +818,21 @@
             if (webcamStream) {
                 webcamStream.getTracks().forEach(track => track.stop());
             }
+            clearInterval(timerInterval);
+            isPaused = false;
+            document.getElementById('pause-overlay').classList.add('hidden');
             document.getElementById('screen-gameover').classList.add('hidden');
             document.getElementById('screen-gameplay').classList.add('hidden');
             document.getElementById('game-stats-header').classList.add('hidden');
+            document.getElementById('gameplay-controls').classList.add('hidden');
             document.getElementById('screen-lobby').classList.remove('hidden');
         }
 
         // SETTINGS & QUESTIONS MANAGEMENT
         function openSettingsModal() {
+            if (!document.getElementById('screen-gameplay').classList.contains('hidden') && !isPaused) {
+                togglePause();
+            }
             document.getElementById('modal-settings').classList.remove('hidden');
         }
         function closeSettingsModal() {
@@ -819,25 +866,25 @@
 
             questions.forEach((q, idx) => {
                 const item = document.createElement('div');
-                item.className = "p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-900/50 transition";
+                item.className = "p-3 flex flex-col md:flex-row md:items-center justify-between gap-2 hover:bg-slate-900/50 transition";
                 item.innerHTML = `
-                    <div class="flex items-start gap-3">
-                        <span class="bg-slate-800 text-indigo-400 font-bold text-xs px-2.5 py-1 rounded-lg border border-slate-700">${idx + 1}</span>
+                    <div class="flex items-start gap-2">
+                        <span class="bg-slate-800 text-indigo-400 font-bold text-[10px] px-2 py-0.5 rounded border border-slate-700">${idx + 1}</span>
                         <div>
-                            <h5 class="font-bold text-white text-sm">${q.text}</h5>
-                            <div class="flex gap-4 text-xs text-slate-400 mt-1">
+                            <h5 class="font-bold text-white text-xs">${q.text}</h5>
+                            <div class="flex gap-3 text-[10px] text-slate-400 mt-0.5">
                                 <span class="${q.correct === 'A' ? 'text-emerald-400 font-bold' : ''}">Kiri (A): ${q.optA}</span>
                                 <span class="${q.correct === 'B' ? 'text-emerald-400 font-bold' : ''}">Kanan (B): ${q.optB}</span>
                                 <span>⏱ ${q.timer}s</span>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 self-end md:self-auto">
-                        <button onclick="editQuestion(${q.id})" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1">
-                            <i data-lucide="edit-2" class="w-3.5 h-3.5"></i> Edit
+                    <div class="flex items-center gap-1.5 self-end md:self-auto">
+                        <button onclick="editQuestion(${q.id})" class="p-1.5 bg-slate-800 text-slate-300 rounded text-[10px] font-semibold flex items-center gap-1">
+                            <i data-lucide="edit-2" class="w-3 h-3"></i> Edit
                         </button>
-                        <button onclick="deleteQuestion(${q.id})" class="p-2 bg-rose-950/50 hover:bg-rose-900 text-rose-300 rounded-lg text-xs font-semibold flex items-center gap-1 border border-rose-900/50">
-                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus
+                        <button onclick="deleteQuestion(${q.id})" class="p-1.5 bg-rose-950/50 text-rose-300 rounded text-[10px] font-semibold flex items-center gap-1 border border-rose-900/50">
+                            <i data-lucide="trash-2" class="w-3 h-3"></i> Hapus
                         </button>
                     </div>
                 `;
@@ -870,7 +917,7 @@
             const editId = document.getElementById('q-edit-id').value;
 
             if (!text || !optA || !optB) {
-                alert("Harap isi teks pertanyaan dan kedua opsi jawaban!");
+                alert("Lengkapi semua isian soal!");
                 return;
             }
 
@@ -880,10 +927,7 @@
                     q.text = text; q.optA = optA; q.optB = optB; q.correct = correct; q.timer = timer;
                 }
             } else {
-                questions.push({
-                    id: Date.now(),
-                    text, optA, optB, correct, timer, category: 'Umum'
-                });
+                questions.push({ id: Date.now(), text, optA, optB, correct, timer, category: 'Umum' });
             }
 
             closeQuestionForm();
@@ -905,19 +949,17 @@
         }
 
         function deleteQuestion(id) {
-            if (confirm("Apakah Anda yakin ingin menghapus soal ini?")) {
+            if (confirm("Hapus soal ini?")) {
                 questions = questions.filter(q => q.id !== id);
                 renderQuestionsList();
             }
         }
 
-        // MASS IMPORT QUESTIONS
         function insertCSVExample() {
             document.getElementById('import-questions-text').value = 
 `Pertanyaan;Opsi Kiri;Opsi Kanan;JawabanBenar;Timer
 Siapakah penemu bola lampu?;Thomas Edison;Alexander Graham Bell;A;10
-Ibu kota negara Jepang adalah?;Kyoto;Tokyo;B;10
-Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
+Ibu kota negara Jepang adalah?;Kyoto;Tokyo;B;10`;
         }
 
         function insertJSONExample() {
@@ -937,16 +979,12 @@ Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
             const raw = document.getElementById('import-questions-text').value.trim();
             const replaceAll = document.getElementById('import-replace-questions').checked;
 
-            if (!raw) {
-                alert("Teks import kosong!");
-                return;
-            }
+            if (!raw) return;
 
             let newQuestions = [];
 
             try {
                 if (raw.startsWith('[')) {
-                    // JSON Format
                     const parsed = JSON.parse(raw);
                     parsed.forEach((item, i) => {
                         newQuestions.push({
@@ -956,11 +994,10 @@ Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
                             optB: item.optB || item.opsiB,
                             correct: (item.correct || item.jawaban || 'A').toUpperCase(),
                             timer: parseInt(item.timer) || 10,
-                            category: item.category || 'Import'
+                            category: 'Import'
                         });
                     });
                 } else {
-                    // CSV Format
                     const lines = raw.split('\n');
                     lines.forEach((line, i) => {
                         const cols = line.split(';').map(c => c.trim());
@@ -978,16 +1015,8 @@ Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
                     });
                 }
 
-                if (newQuestions.length === 0) {
-                    alert("Format data tidak valid atau tidak terdeteksi!");
-                    return;
-                }
-
-                if (replaceAll) {
-                    questions = newQuestions;
-                } else {
-                    questions = questions.concat(newQuestions);
-                }
+                if (replaceAll) questions = newQuestions;
+                else questions = questions.concat(newQuestions);
 
                 renderQuestionsList();
                 document.getElementById('import-questions-text').value = '';
@@ -995,11 +1024,10 @@ Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
                 switchTab('tab-questions');
 
             } catch (err) {
-                alert(`Gagal memproses import data: ${err.message}`);
+                alert(`Gagal import: ${err.message}`);
             }
         }
 
-        // STUDENTS LIST
         function renderStudentsTextarea() {
             const textarea = document.getElementById('import-students-text');
             textarea.value = students.map(s => s.name).join('\n');
@@ -1010,14 +1038,9 @@ Air membeku pada suhu berapa derajat Celcius?;0;100;A;10`;
             const raw = document.getElementById('import-students-text').value.trim();
             const names = raw.split('\n').map(n => n.trim()).filter(n => n.length > 0);
 
-            students = names.map((name, i) => ({
-                id: i + 1,
-                name: name,
-                active: true
-            }));
-
+            students = names.map((name, i) => ({ id: i + 1, name: name, active: true }));
             document.getElementById('tab-count-students').innerText = students.length;
-            alert(`Daftar ${students.length} siswa berhasil disimpan!`);
+            alert(`Daftar ${students.length} siswa tersimpan!`);
         }
     </script>
 </body>
