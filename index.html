@@ -214,14 +214,23 @@
         <!-- SCREEN 2: GAMEPLAY CAMERA FEED -->
         <div id="screen-gameplay" class="hidden absolute inset-0 w-full h-full flex flex-col">
             
+            <!-- Countdown Timer Overlay (REVISI: DIPINDAH KE KIRI ATAS AGAR TIDAK MENGHALANGI) -->
+            <div class="absolute top-3 left-3 md:top-5 md:left-5 z-30">
+                <div id="timer-box" class="glass-card px-3 py-1.5 md:px-5 md:py-2 rounded-2xl shadow-2xl flex items-center gap-2 border border-indigo-400/40">
+                    <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-indigo-300 animate-spin"></i>
+                    <span id="timer-text" class="text-lg md:text-2xl font-black tracking-widest text-white font-mono">10</span>
+                    <span class="text-[9px] md:text-[10px] font-bold text-slate-300 uppercase">Detik</span>
+                </div>
+            </div>
+
             <!-- Question Top Banner -->
-            <div class="absolute top-2 md:top-4 inset-x-2 md:inset-x-4 z-20 flex justify-center">
-                <div class="glass-card rounded-2xl p-2.5 md:p-3 shadow-2xl max-w-3xl w-full text-center flex flex-col items-center gap-0.5 border border-indigo-500/30">
+            <div class="absolute top-2 md:top-4 inset-x-2 md:inset-x-4 z-20 flex justify-center pl-28 md:pl-36">
+                <div class="glass-card rounded-2xl p-2.5 md:p-3 shadow-2xl max-w-2xl w-full text-center flex flex-col items-center gap-0.5 border border-indigo-500/30">
                     <div class="flex justify-between items-center w-full text-[10px] md:text-xs font-semibold uppercase tracking-wider text-indigo-300 px-1">
                         <span id="question-category">Kategori: Umum</span>
                         <span id="question-progress">Pertanyaan 1 dari 5</span>
                     </div>
-                    <h2 id="question-text" class="text-sm sm:text-base md:text-xl font-black text-white leading-snug drop-shadow-md">
+                    <h2 id="question-text" class="text-sm sm:text-base md:text-lg font-black text-white leading-snug drop-shadow-md">
                         Memuat Pertanyaan...
                     </h2>
                 </div>
@@ -244,35 +253,26 @@
                     
                     <!-- LEFT ZONE (ZONA A) -->
                     <div id="zone-left" class="w-1/2 h-full border-r border-slate-700/30 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative">
-                        <div id="zone-left-badge" class="absolute top-16 md:top-24 left-2 md:left-4 glass-button text-slate-200 text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
+                        <div id="zone-left-badge" class="absolute top-16 md:top-20 left-2 md:left-4 glass-button text-slate-200 text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_8px_#818cf8]"></span> KIRI (A)
                         </div>
-                        <div class="glass-card rounded-xl p-3 md:p-4 shadow-xl text-white border-indigo-500/30">
+                        <div class="glass-card rounded-xl p-3 md:p-4 shadow-xl text-white border-indigo-500/30 mb-2">
                             <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 mb-0.5">Opsi A</div>
-                            <div id="option-a-text" class="text-xs sm:text-sm md:text-lg font-extrabold leading-tight">Jawaban A</div>
+                            <div id="option-a-text" class="text-xs sm:text-sm md:text-base font-extrabold leading-tight">Jawaban A</div>
                         </div>
                     </div>
 
                     <!-- RIGHT ZONE (ZONA B) -->
                     <div id="zone-right" class="w-1/2 h-full border-l border-slate-700/30 transition-all duration-300 flex flex-col justify-end p-3 md:p-6 relative">
-                        <div id="zone-right-badge" class="absolute top-16 md:top-24 right-2 md:right-4 glass-button text-slate-200 text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
+                        <div id="zone-right-badge" class="absolute top-16 md:top-20 right-2 md:right-4 glass-button text-slate-200 text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full shadow flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-purple-400 shadow-[0_0_8px_#c084fc]"></span> KANAN (B)
                         </div>
-                        <div class="glass-card rounded-xl p-3 md:p-4 shadow-xl text-white border-purple-500/30">
+                        <div class="glass-card rounded-xl p-3 md:p-4 shadow-xl text-white border-purple-500/30 mb-2">
                             <div class="text-[10px] font-bold uppercase tracking-wider text-purple-300 mb-0.5">Opsi B</div>
-                            <div id="option-b-text" class="text-xs sm:text-sm md:text-lg font-extrabold leading-tight">Jawaban B</div>
+                            <div id="option-b-text" class="text-xs sm:text-sm md:text-base font-extrabold leading-tight">Jawaban B</div>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Countdown Timer Overlay -->
-                <div class="absolute bottom-3 md:bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
-                    <div id="timer-box" class="glass-card px-4 py-1.5 md:px-6 md:py-2 rounded-2xl shadow-2xl flex items-center gap-2 border border-indigo-400/40">
-                        <i data-lucide="clock" class="w-4 h-4 md:w-5 md:h-5 text-indigo-300 animate-spin"></i>
-                        <span id="timer-text" class="text-xl md:text-3xl font-black tracking-widest text-white font-mono">10</span>
-                        <span class="text-[10px] font-bold text-slate-300 uppercase">Detik</span>
-                    </div>
                 </div>
 
             </div>
